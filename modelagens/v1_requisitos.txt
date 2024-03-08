@@ -1,0 +1,265 @@
+Main
+association CalendarioController
+association SalasVirtuaisController
+association HorasComplementaresController
+association HistoricoController
+association CursoController
+---
+---
+---
+
+CalendarioController
+composes CalendarioRepository
+---
+- calendarioRepository: CalendarioRepository
+---
++ CalendarioController()
++ criarEvento(nome: str, data: Date, horarioInicio: str, horarioFim: str): idEvento
++ acessarEvento(idEvento: str): Evento
++ editarEvento(idEvento: str, novaInfo: str): void
++ excluirEvento(idEvento: str): Evento
++ consultarEventosDia(dia: Date): Eventos
+---
+
+CalendarioRepository
+composes Evento <Interface>
+---
+- eventos: Map< idEvento, Evento>
+---
++ CalendarioRepository()
++ criarEvento(nome: str, data: Date, horarioInicio: str, horarioFim: str): idEvento
++ acessarEvento(idEvento: str): Evento
++ editarEvento(idEvento: str, novaInfo: str): void
++ excluirEvento(idEvento: str): Evento
++ consultarEventosDia(dia: Date): Evento[]
+---
+
+
+SalasVirtuaisController
+composes SalasVirtuaisRepository
+---
+- salasVirtuaisRepository: SalasVirtuaisRepository
+---
++ SalasVirtuaisController()
++ criarNovaSalaVirtual(nome: str, disciplina: str): idSala
++ acessarSalaVirtualExistente(nomeSala: str): void
++ buscarSalaVirtualExistente(nomeSala: str): SalaVirtual
++ excluirSalaVirtualExistente(nomeSala: str): SalaVirtual
++ convidarParaSalaVirtualExistente(nomeSala: str): enderecoSala
+---
+
+SalasVirtuaisRepository
+composes SalaVirtual <Interface>
+---
+- salas: Map< idSalaVirtual, SalaVirtual>
+---
++ SalasVirtuaisRepository()
++ criarNovaSalaVirtual(nome: str, disciplina: str): idSalaVirtual
++ acessarSalaVirtualExistente(nomeSala: str): void
++ buscarSalaVirtualExistente(nomeSala: str): SalaVirtual
++ excluirSalaVirtualExistente(nomeSala: str): SalaVirtual
++ convidarParaSalaVirtualExistente(nomeSala: str): enderecoSala
+---
+
+HorasComplementaresController
+composes HorasComplementaresRepository
+---
+- horasComplementaresRepository: HorasComplementaresRepository
+---
++ HorasComplementaresController()
++ cadastrarAtividadeComplementar(nome: str, tipo: str, duracao: str): idAtividadeComplementar
++ consultarAtividadeComplementar(idAtividade: str): AtividadeComplementar
++ editarAtividadeComplementar(idAtividade: str, novaInfo: str): void
++ excluirAtividadeComplementar(idAtividade: str): AtividadeComplementar
++ getProgressoHorasComplementares(): float
++ calcularCreditosPorHorasComplementares(tipoAtividade: str, duracao: str): int
+---
+
+HorasComplementaresRepository
+composes AtividadeComplementar <Interface>
+---
+- atividadesComplementares: Map< idAtividadeComplementar, AtividadeComplementar>
+---
++ cadastrarAtividadeComplementar(nome: str, tipo: str, duracao: str): idAtividadeComplementar
++ consultarAtividadeComplementar(idAtividade: str): AtividadeComplementar
++ editarAtividadeComplementar(idAtividade: str, novaInfo: str): void
++ excluirAtividadeComplementar(idAtividade: str): AtividadeComplementar
++ getProgressoHorasComplementares(): float
++ calcularCreditosPorHorasComplementares(tipoAtividade: str, duracao: str): int
+---
+
+HistoricoController
+composes HistoricoRepository
+composes DisciplinaController
+---
+- historicoRepository: HistoricoRepository
+- disciplinaController: DisciplinaController
+---
++ HistoricoController()
++ cadastrarDisciplinasCursando(disciplina: Disciplina): void
++ cadastrarDisciplinasCursadas(disciplina: Disciplina): void
++ excluiDisciplinasCursando(idDisciplina: str): Disciplina
++ editaDisciplinasCursando(idDisciplina: str, novaInfo: str): void
++ buscaDisciplinasCursando(idDisciplina: str): Disciplina
++ getProgressoHorasObrigatorias(): float
++ getProgressoTotalCurso(): float
++ getCreditosFaltante(): float // creditosFaltantes
+---
+
+HistoricoRepository
+composes Historico <Interface>
+---
+---
++ HistoricoRepository()
++ cadastrarDisciplinasCursando(disciplina: Disciplina): void
++ cadastrarDisciplinasCursadas(disciplina: Disciplina): void
++ excluiDisciplinasCursando(idDisciplina: str): Disciplina
++ editaDisciplinasCursando(idDisciplina: str, novaInfo: str): void
++ buscaDisciplinasCursando(idDisciplina: str): Disciplina
++ getProgressoHorasObrigatorias(): float
++ getProgressoTotalCurso(): float
++ getCreditosFaltante(): float // creditosFaltantes
+---
+
+DisciplinaController
+association CursoController
+---
+- cursoController: CursoController
+---
++ DisciplinaController()
++ cadastrarFaltaDisciplina(idDisciplina: str, falta: int): void
++ editarFaltaDisciplina(idDisciplina: str): void
++ excluirFaltaDisciplina(idDisciplina: str): void
++ buscarFaltasDisciplina(idDisciplina: str): float
++ calculaPontosFinaisD(idDisciplina: str): pontosFinais
++ cadastroPesoNotaDisciplinaCursando(idDisciplina: str, idPeso: str, peso: float): void
++ getMediaDisciplinaCursando(idDisciplina: str): float
++ cadastraNotaDisciplinaCursando(idDisciplina: str, idNota: str, nota: float): void
++ cadastraNotaDisciplinaCursando(idDisciplina: str, idNota: str, nota: float): void
+---
+
+DisciplinaRepository
+composes Disciplina <Interface>
+---
+- disciplinas: Map< idDisciplina, Disciplina>
+---
++ DisciplinaRepository()
++ cadastrarFaltaDisciplina(idDisciplina: str, falta: int): void
++ editarFaltaDisciplina(idDisciplina: str): void
++ excluirFaltaDisciplina(idDisciplina: str): void
++ buscarFaltasDisciplina(idDisciplina: str): float
++ calculaPontosFinaisD(idDisciplina: str): pontosFinais
++ cadastroPesoNotaDisciplinaCursando(idDisciplina: str, idPeso: str, peso: float): void
++ getMediaDisciplinaCursando(idDisciplina: str): float
++ cadastraNotaDisciplinaCursando(idDisciplina: str, idNota: str, nota: float): void
++ cadastraNotaDisciplinaCursando(idDisciplina: str, idNota: str, nota: float): void
+---
+
+CursoController
+composes CursoRepository
+---
+- cursoRepository: CursoRepository
+---
++ CursoController()
++ buscaCadeirasCurso(): Disciplinas[]
++ buscaCadeirasCursoPeriodo(periodo: int): Cadeira[]
+---
+
+CursoRepository
+composes Curso <Interface>
+---
+---
++ CursoRepository()
++ buscaCadeirasCurso(): Disciplinas[]
++ buscaCadeirasCursoPeriodo(periodo: int): Cadeira[]
+---
+
+
+UsuarioController
+composes UsuarioRepository
+---
+- usuarioRepository: UsuarioRepository
+---
++ UsuarioController()
++ cadastrarUsuario(UsuarioDTO: usuario): idUsuario
++ excluirUsuario(idUsuario: str): void
++ editarUsuario(idUsuario: str, novaInfo: str): void
++ buscarUsuario(idUsuario: str): Usuario
+---
+
+UsuarioRepository
+composes Usuario <Interface>
+---
+---
++ UsuarioRepository()
++ cadastrarUsuario(UsuarioDTO: usuario): idUsuario
++ excluirUsuario(idUsuario: str): void
++ editarUsuario(idUsuario: str, novaInfo: str): void
++ buscarUsuario(idUsuario: str): Usuario
+---
+
+Historico <Interface>
+---
+- cra: float
+- cadeiras: Cadeiras[]
+- creditosObrigatoriosPagos: int
+- creditosComplementaresPagos: int
+---
+---
+
+Disciplina <Interface>
+---
+- nome: str
+- periodo: str
+- sigla: str
+- creditos: str
+- preRequisitos: Disciplina[]
+---
+---
+
+
+AtividadeComplementar <Interface>
+---
+- nome: str
+- tipo: str
+- duracao: str
+- creditos: int
+---
+---
+
+Evento <Interface>
+---
+- nome: str
+- data: Date
+- horarioInicio: str
+- horarioFim: str
+- recorrente: boolean
+- proximasDatas: int
+---
+---
+
+SalaVirtual <Interface>
+---
+- nome: str
+- disciplina: str
+- link: str
+---
+---
+
+
+Usuario <Interface>
+---
+- nome: str
+- email: str
+- password: str
+- dataNascimento: Date
+- matricula: str
+- periodoMatriculado: str
+---
+---
+
+Curso <Interface>
+---
+- disciplinas: Disciplinas[]
+---
+---
